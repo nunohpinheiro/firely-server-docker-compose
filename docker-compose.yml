@@ -1,0 +1,42 @@
+﻿version: '3.8'
+
+services:
+  firely-server:
+    container_name: "firely-server"
+    image: firely/server:4.12.0
+    ports:
+      - "4080:4080"
+    user: root
+    depends_on:
+      firely-sqlserver-db:
+        condition: service_healthy
+    volumes:
+      - ./firely-configuration/license/firelyserver-license.json:/app/firelyserver-license.json
+      - ./firely-configuration/plugins:/app/plugins
+      - ./firely-configuration/settings/appsettings.json:/app/appsettings.json
+      # - ./firely-configuration/settings/appsettings.instance.exclude_import.json:/app/appsettings.instance.json
+      - ./firely-configuration/settings/logsettings.json:/app/logsettings.json
+      - ./firely-configuration/vonk-imported:/app/vonk-imported
+      - ./firely-configuration/vonk-import:/app/vonk-import
+      - firely-dataprotection-keys:/root/.aspnet/DataProtection-Keys
+
+  firely-sqlserver-db:
+    container_name: "firely-server-db"
+    image: mcr.microsoft.com/mssql/server:2022-CU12-ubuntu-22.04
+    ports:
+      - "1433:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=SQLServerStrong(!)Password*
+    user: root
+    healthcheck:
+      test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 'SQLServerStrong(!)Password*' -Q 'SELECT 1'
+      interval: 10s
+      timeout: 10s
+      retries: 3
+    volumes:
+      - firely-sqlserver-data:/var/opt/mssql/data
+
+volumes:
+    firely-dataprotection-keys:
+    firely-sqlserver-data:

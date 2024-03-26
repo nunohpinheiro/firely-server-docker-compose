@@ -1,0 +1,29 @@
+﻿{
+    "Serilog": {
+        "MinimumLevel": {
+            "Default": "Information",
+            "Override": {
+                "Microsoft": "Warning",
+                "Microsoft.AspNetCore.Hosting.Diagnostics": "Information",
+                "Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker": "Warning",
+                "Microsoft.AspNetCore.Mvc.StatusCodeResult": "Information",
+                "Microsoft.AspNetCore.Routing": "Warning",
+                "Microsoft.Hosting": "Information",
+                "Microsoft.Hosting.Lifetime": "Information",
+                "System": "Warning",
+                "Vonk": "Information",
+                "Vonk.Administration.Api.Import": "Information",
+                "Vonk.Core.Licensing": "Information",
+                "Vonk.Core.Pluggability": "Information",
+                "Vonk.Repository.Sql.Raw": "Information",
+                "Vonk.Server": "Information"
+            }
+        },
+        "Enrich": [ "WithMachineName", "WithThreadId", "FromLogContext" ],
+        "Properties": {
+            "Application": "Firely Server Docker Compose Example",
+            "Service": "Firely Server Docker Compose Example",
+            "ServiceName": "Firely Server Docker Compose Example"
+        }
+    }
+}
